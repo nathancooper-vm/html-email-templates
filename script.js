@@ -1,5 +1,6 @@
 let currentPlatform = null;
 let currentTemplate = null;
+let currentTemplatePath = null; // Array path like ['kickoff', 'intro-initial-a']
 let availableTemplates = {};
 
 // Load available templates on page load
@@ -8,90 +9,136 @@ function loadTemplates() {
         // Get templates from the embedded templates.js file
         availableTemplates = getAllTemplates();
         console.log('Loaded templates:', availableTemplates);
-        populateNavigation();
+        // Default to SendGrid platform
+        selectPlatform('sendgrid');
     } catch (error) {
         console.error('Error loading templates:', error);
     }
 }
 
-function populateNavigation() {
-    // Populate Auth0 templates
-    const auth0List = document.getElementById('auth0-templates');
-    auth0List.innerHTML = '';
-    if (availableTemplates.auth0) {
-        Object.keys(availableTemplates.auth0).forEach(template => {
-            const li = document.createElement('li');
-            li.className = 'template-item';
-            const link = document.createElement('a');
-            link.className = 'template-link';
-            link.href = '#';
-            link.textContent = formatTemplateName(template);
-            link.onclick = (e) => {
-                e.preventDefault();
-                selectTemplate('auth0', template);
-            };
-            li.appendChild(link);
-            auth0List.appendChild(li);
-        });
-    }
-
-    // Populate SendGrid templates
-    const sendgridList = document.getElementById('sendgrid-templates');
-    sendgridList.innerHTML = '';
-    if (availableTemplates.sendgrid) {
-        Object.keys(availableTemplates.sendgrid).forEach(template => {
-            const li = document.createElement('li');
-            li.className = 'template-item';
-            const link = document.createElement('a');
-            link.className = 'template-link';
-            link.href = '#';
-            link.textContent = formatTemplateName(template);
-            link.onclick = (e) => {
-                e.preventDefault();
-                selectTemplate('sendgrid', template);
-            };
-            li.appendChild(link);
-            sendgridList.appendChild(li);
-        });
-    }
-}
-
-function toggleAccordion(platform) {
-    const content = document.getElementById(platform + '-content');
-    const header = content.previousElementSibling;
+// Select platform from dropdown
+function selectPlatform(platform) {
+    currentPlatform = platform;
+    currentTemplate = null;
+    currentTemplatePath = null;
     
-    // Toggle the accordion
-    if (content.classList.contains('open')) {
-        content.classList.remove('open');
-        header.classList.remove('active');
-        // If no template is selected, show placeholder
-        if (!currentTemplate) {
-            showPlaceholderMessage();
-        }
-    } else {
-        // Close other accordions
-        document.querySelectorAll('.accordion-content').forEach(acc => {
-            acc.classList.remove('open');
-        });
-        document.querySelectorAll('.accordion-header').forEach(hdr => {
-            hdr.classList.remove('active');
-        });
-        
-        // Open this accordion
-        content.classList.add('open');
-        header.classList.add('active');
-        
-        // Clear template selection when switching platforms
-        clearTemplateSelection();
-        
-        // Show placeholder message
+    // Update dropdown
+    const select = document.getElementById('platform-select');
+    if (select) {
+        select.value = platform;
+    }
+    
+    // Header is now static "Select Platform", no need to update
+    
+    // Clear active template links
+    clearTemplateSelection();
+    
+    // Populate templates for selected platform
+    populatePlatformTemplates(platform);
+    
+    // Show placeholder if no template selected
+    if (!currentTemplate) {
         showPlaceholderMessage();
     }
 }
 
-function selectTemplate(platform, template) {
+function formatPlatformName(platform) {
+    const names = {
+        'auth0': 'Auth0',
+        'sendgrid': 'SendGrid',
+        'salesforce': 'Salesforce',
+        'yesware': 'Yesware'
+    };
+    return names[platform] || platform;
+}
+
+// Populate templates for a platform, handling nested folders
+function populatePlatformTemplates(platform) {
+    const templateList = document.getElementById('template-list');
+    if (!templateList) return;
+    
+    templateList.innerHTML = '';
+    
+    if (!platform || !availableTemplates[platform]) {
+        return;
+    }
+    
+    const platformTemplates = availableTemplates[platform];
+    
+    // Recursively build template list
+    function buildTemplateList(items, parentList, parentPath = []) {
+        Object.keys(items).sort().forEach(key => {
+            const item = items[key];
+            
+            // Check if it's a folder (object) or template (string)
+            if (typeof item === 'object' && item !== null && !item.match) {
+                // It's a folder - create expandable folder item
+                const folderLi = document.createElement('li');
+                folderLi.className = 'folder-item';
+                
+                const folderDiv = document.createElement('div');
+                folderDiv.className = 'folder-header';
+                folderDiv.innerHTML = `
+                    <span class="folder-icon">▶</span>
+                    <span class="folder-name">${formatTemplateName(key)}</span>
+                `;
+                folderDiv.onclick = function() {
+                    toggleFolder(folderLi);
+                };
+                
+                const folderContent = document.createElement('ul');
+                folderContent.className = 'folder-content';
+                folderContent.style.display = 'none';
+                
+                // Recursively build nested items within this folder
+                buildTemplateList(item, folderContent, [...parentPath, key]);
+                
+                folderLi.appendChild(folderDiv);
+                folderLi.appendChild(folderContent);
+                parentList.appendChild(folderLi);
+            } else if (typeof item === 'string') {
+                // It's a template - create template link
+                const templatePath = [...parentPath, key];
+                const templateLi = document.createElement('li');
+                templateLi.className = 'template-item';
+                
+                const link = document.createElement('a');
+                link.className = 'template-link';
+                link.href = '#';
+                link.textContent = formatTemplateName(key);
+                link.onclick = function(e) {
+                    e.preventDefault();
+                    selectTemplate(platform, templatePath);
+                };
+                
+                templateLi.appendChild(link);
+                parentList.appendChild(templateLi);
+            }
+        });
+    }
+    
+    buildTemplateList(platformTemplates, templateList);
+}
+
+function toggleFolder(folderItem) {
+    const folderContent = folderItem.querySelector('.folder-content');
+    const folderIcon = folderItem.querySelector('.folder-icon');
+    
+    if (folderContent.style.display === 'none') {
+        folderContent.style.display = 'block';
+        folderIcon.textContent = '▼';
+        folderItem.classList.add('expanded');
+    } else {
+        folderContent.style.display = 'none';
+        folderIcon.textContent = '▶';
+        folderItem.classList.remove('expanded');
+    }
+}
+
+function selectTemplate(platform, templatePath) {
     currentPlatform = platform;
-    currentTemplate = template;
+    currentTemplatePath = templatePath;
+    currentTemplate = templatePath.join('/');
     
     // Update active template link
     document.querySelectorAll('.template-link').forEach(link => {
@@ -99,18 +146,12 @@ function selectTemplate(platform, template) {
     });
     event.target.classList.add('active');
     
-    // Make sure the platform accordion is open
-    const content = document.getElementById(platform + '-content');
-    const header = content.previousElementSibling;
-    if (!content.classList.contains('open')) {
-        toggleAccordion(platform);
-    }
-    
     updatePreview();
 }
 
 function clearTemplateSelection() {
     currentTemplate = null;
+    currentTemplatePath = null;
     // Remove active state from all template links
     document.querySelectorAll('.template-link').forEach(link => {
         link.classList.remove('active');
@@ -171,8 +212,21 @@ function processTemplate(templateHtml, data) {
     return processedHtml;
 }
 
+// Get template using nested path
+function getTemplateByPath(platform, pathArray) {
+    let current = availableTemplates[platform];
+    if (!current) return null;
+    
+    for (let i = 0; i < pathArray.length; i++) {
+        current = current[pathArray[i]];
+        if (!current) return null;
+    }
+    
+    return typeof current === 'string' ? current : null;
+}
+
 function updatePreview() {
-    if (!currentPlatform || !currentTemplate) {
+    if (!currentPlatform || !currentTemplatePath) {
         return;
     }
 
@@ -192,12 +246,18 @@ function updatePreview() {
         url: "https://example.com/reset-password?token=abc123",
         friendly_name: "Your App",
         support_url: "https://example.com/support",
-        contentsList: "Your password reset request details..."
+        contentsList: "Your password reset request details...",
+        email_address: "customer@example.com",
+        social_x: "https://twitter.com/visitingmedia",
+        social_facebook: "https://facebook.com/visitingmedia",
+        social_instagram: "https://instagram.com/visitingmedia",
+        social_linkedin: "https://linkedin.com/company/visitingmedia",
+        social_youtube: "https://youtube.com/@visitingmedia"
     };
 
     try {
-        // Get template content from embedded templates
-        const templateHtml = getTemplate(currentPlatform, currentTemplate);
+        // Get template content using nested path
+        const templateHtml = getTemplateByPath(currentPlatform, currentTemplatePath);
         
         if (templateHtml) {
             // Process the template with sample data
@@ -213,6 +273,12 @@ function updatePreview() {
                     const body = iframeDoc.body;
                     const html = iframeDoc.documentElement;
                     
+                    // Ensure body and html have no margins/padding
+                    body.style.margin = '0';
+                    body.style.padding = '0';
+                    html.style.margin = '0';
+                    html.style.padding = '0';
+                    
                     // Get the actual content height
                     const contentHeight = Math.max(
                         body.scrollHeight,
@@ -222,11 +288,11 @@ function updatePreview() {
                         html.offsetHeight
                     );
                     
-                    // Set iframe height to content size with extra buffer to prevent scrollbars
-                    iframe.style.height = (contentHeight + 64) + 'px'; // Add 64px buffer
+                    // Set iframe height to exact content size (includes the 32px bottom padding)
+                    iframe.style.height = contentHeight + 'px';
                     
-                    // Also update the preview content container height
-                    previewContent.style.height = (contentHeight + 128) + 'px'; // 64px padding + 64px buffer
+                    // Also update the preview content container height to match
+                    previewContent.style.height = contentHeight + 'px';
                 } catch (e) {
                     // Fallback if cross-origin issues occur
                     iframe.style.height = 'auto';
@@ -244,29 +310,6 @@ function updatePreview() {
 // Initialize the application
 function init() {
     loadTemplates();
-    
-    // Default to SendGrid platform (but no template selected)
-    if (availableTemplates.sendgrid) {
-        // Open SendGrid accordion by default
-        const sendgridContent = document.getElementById('sendgrid-content');
-        const sendgridHeader = sendgridContent.previousElementSibling;
-        sendgridContent.classList.add('open');
-        sendgridHeader.classList.add('active');
-        
-        // Show placeholder message
-        showPlaceholderMessage();
-    } else {
-        // Fallback to first available platform
-        const platforms = Object.keys(availableTemplates);
-        if (platforms.length > 0) {
-            const firstPlatform = platforms[0];
-            const content = document.getElementById(firstPlatform + '-content');
-            const header = content.previousElementSibling;
-            content.classList.add('open');
-            header.classList.add('active');
-            showPlaceholderMessage();
-        }
-    }
 }
 
 // Start the application when DOM is loaded

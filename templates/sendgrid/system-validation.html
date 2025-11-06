@@ -72,7 +72,7 @@
                 <!-- Body Section -->
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
-                        <td style="background-color: #ffffff; padding: 32px 24px 48px 24px;">
+                        <td style="background-color: #ffffff; padding: 32px 24px 32px 24px;">
                             
                             <!-- Content Section -->
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 32px;">
@@ -191,34 +191,73 @@
                     <tr>
                         <td style="background-color: #f5f8f8; padding: 24px;">
                             
-                            <!-- Logo and Social Icons -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 64px;">
+                            <!-- Logo -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 24px;">
                                 <tr>
-                                    <td style="vertical-align: middle;">
-                                        <!-- Combined Logo and Social Icons -->
-                                        <img src="http://cdn.mcauto-images-production.sendgrid.net/7bbc7cb8410818f3/b7384e3f-dc83-46f3-a20a-f7bbaa8d6c4a/530x20.png" 
-                                             alt="VISITING MEDIA with social media icons" 
-                                             style="height: 20px; width: auto; display: block;">
+                                    <td>
+                                        <img src="assets/images/vm-logo-footer.png" 
+                                             alt="VISITING MEDIA" 
+                                             style="height: auto; width: auto; display: block; max-width: 185px;">
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Social Media Icons -->
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin: 24px 0 0 0;">
+                                <tr>
+                                    <!-- Twitter/X Icon -->
+                                    <td style="padding: 0 5px;">
+                                        <a href="{{social_x}}" target="_blank" style="text-decoration: none;">
+                                            <img src="http://cdn.mcauto-images-production.sendgrid.net/7bbc7cb8410818f3/e45e7518-f4f8-4975-af35-8d67161b8b88/20x20.png" alt="Twitter" style="width: 20px; height: 20px; border: 0; display: block;">
+                                        </a>
+                                    </td>
+                                    
+                                    <!-- Facebook Icon -->
+                                    <td style="padding: 0 5px;">
+                                        <a href="{{social_facebook}}" target="_blank" style="text-decoration: none;">
+                                            <img src="http://cdn.mcauto-images-production.sendgrid.net/7bbc7cb8410818f3/e46e9ad7-c2db-42e2-a444-77574f4f6375/20x20.png" alt="Facebook" style="width: 20px; height: 20px; border: 0; display: block;">
+                                        </a>
+                                    </td>
+                                    
+                                    <!-- Instagram Icon -->
+                                    <td style="padding: 0 5px;">
+                                        <a href="{{social_instagram}}" target="_blank" style="text-decoration: none;">
+                                            <img src="http://cdn.mcauto-images-production.sendgrid.net/7bbc7cb8410818f3/90b00e24-c603-41ec-8814-e281b729b309/20x20.png" alt="Instagram" style="width: 20px; height: 20px; border: 0; display: block;">
+                                        </a>
+                                    </td>
+                                    
+                                    <!-- LinkedIn Icon -->
+                                    <td style="padding: 0 5px;">
+                                        <a href="{{social_linkedin}}" target="_blank" style="text-decoration: none;">
+                                            <img src="http://cdn.mcauto-images-production.sendgrid.net/7bbc7cb8410818f3/39f9b53a-62dc-478c-bb5b-4d0ab679a244/20x20.png" alt="LinkedIn" style="width: 20px; height: 20px; border: 0; display: block;">
+                                        </a>
+                                    </td>
+                                    
+                                    <!-- YouTube Icon -->
+                                    <td style="padding: 0 5px;">
+                                        <a href="{{social_youtube}}" target="_blank" style="text-decoration: none;">
+                                            <img src="http://cdn.mcauto-images-production.sendgrid.net/7bbc7cb8410818f3/4076269f-31e3-4e01-be28-fa5b22d5a033/20x20.png" alt="YouTube" style="width: 20px; height: 20px; border: 0; display: block;">
+                                        </a>
                                     </td>
                                 </tr>
                             </table>
 
                             <!-- Footer Text -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 24px;">
                                 <tr>
                                     <td style="font-family: 'Inter', Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 18px; color: #535862; text-align: left;">
+                                        
                                         <p style="margin: 0 0 12px 0;">
                                             This email was sent to 
-                                            <a href="mailto:{{email_address}}" style="color: #008b99; text-decoration: none;">{{email_address}}</a>. 
+                                            <span style="color: #008b99;">{{email_address}}</span>. 
                                             If you'd rather not receive this kind of email, you can 
-                                            <a href="#" style="color: #008b99; text-decoration: none;">unsubscribe or manage your email preferences</a>.
+                                            <a href="[UNSUBSCRIBE_URL]" style="color: #008b99; text-decoration: underline;">unsubscribe or manage your email preferences</a>.
                                         </p>
-                                        <p style="margin: 0 0 12px 0;">
-                                            Visiting Media, 245 W Main Street #1, Carlton, OR 97111
-                                        </p>
-                                        <p style="margin: 0;">
-                                            Message ID: em_lyqs5va5x1oub8jykw2krodd1e0lfo
-                                        </p>
+                                        
+                                        <p style="margin: 0 0 12px 0;">Visiting Media, 245 W Main Street #1, Carlton, OR 97111</p>
+                                        
+                                        <p style="margin: 0;">Message ID: em_lyqs5va5x1oub8jykw2krodd1e0lfo</p>
+                                        
                                     </td>
                                 </tr>
                             </table>

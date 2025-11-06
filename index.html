@@ -8,43 +8,37 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Email Template Preview</h1>
-            <p>Preview your email templates. First select a platform (Auth0 or SendGrid), then choose a template to view it.</p>
-        </div>
-
-        <div class="main-layout">
+        <header class="top-header">
+            <img src="http://cdn.mcauto-images-production.sendgrid.net/7bbc7cb8410818f3/2f8a59b7-4b14-44c7-bb5f-708e4295d6c6/187x16.png" 
+                 alt="VISITING MEDIA" 
+                 class="top-header-logo">
+        </header>
+        
+        <div class="navigation-main">
             <div class="navigation-sidebar">
-                <div class="navigation-header">
-                    Template Navigation
-                </div>
-                <div class="accordion-section">
-                    <div class="accordion-header" onclick="toggleAccordion('auth0')">
-                        Auth0
-                    </div>
-                    <div class="accordion-content" id="auth0-content">
-                        <ul class="template-list" id="auth0-templates">
-                            <!-- Auth0 templates will be populated dynamically -->
-                        </ul>
-                    </div>
-                </div>
-                <div class="accordion-section">
-                    <div class="accordion-header" onclick="toggleAccordion('sendgrid')">
-                        SendGrid
-                    </div>
-                    <div class="accordion-content open" id="sendgrid-content">
-                        <ul class="template-list" id="sendgrid-templates">
-                            <!-- SendGrid templates will be populated dynamically -->
+                <div class="template-list-container">
+                    <select id="platform-select" onchange="selectPlatform(this.value)" class="platform-select">
+                        <option value="">Select a platform</option>
+                        <option value="auth0">Auth0</option>
+                        <option value="sendgrid" selected>SendGrid</option>
+                        <option value="salesforce">Salesforce</option>
+                        <option value="yesware">Yesware</option>
+                    </select>
+                    <div class="templates-section">
+                        <div class="templates-heading">TEMPLATES</div>
+                        <ul class="template-list" id="template-list">
+                            <!-- Templates will be populated dynamically -->
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="preview-container">
-                <div class="preview-frame">
-                    <div class="preview-header">
-                        Email Preview
-                    </div>
+            <div class="main-container">
+                <div class="main-header">
+                    <h1>Email template preview</h1>
+                    <p>First select a platform, then choose a template to view the email preview.</p>
+                </div>
+                <div class="content-container">
                     <iframe id="previewFrame" class="preview-content" src="about:blank"></iframe>
                 </div>
             </div>
