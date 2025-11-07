@@ -2,11 +2,13 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #d0d0d0;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 .top-header {
     background-color: #2c5461;
@@ -26,28 +28,31 @@ body {
 .container {
     max-width: 1440px;
     width: 100%;
+    height: 100vh;
     margin: 0 auto;
     box-sizing: border-box;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow: hidden;
 }
 .navigation-main {
     display: flex;
     align-items: stretch;
     width: 100%;
     flex: 1;
-    min-height: calc(100vh - 72px);
+    height: calc(100vh - 72px);
+    overflow: hidden;
 }
 .navigation-sidebar {
     width: 280px;
-    min-height: calc(100vh - 72px);
+    height: calc(100vh - 72px);
     padding: 0 0 16px 0;
     box-sizing: border-box;
     flex-shrink: 0;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     background: #649AA9;
     align-self: stretch;
 }
@@ -194,22 +199,30 @@ body {
     align-items: center;
     gap: 8px;
     border-radius: 8px;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
     box-sizing: border-box;
 }
 .folder-header:hover {
     background: rgba(55, 107, 122, 0.6);
 }
+.folder-item.expanded .folder-header {
+    color: #649AA9;
+}
+.folder-item.expanded .folder-name {
+    color: #649AA9;
+}
 .folder-icon {
     font-size: 10px;
     color: #ffffff;
-    transition: transform 0.2s;
+    transition: transform 0.2s, color 0.2s;
 }
 .folder-item.expanded .folder-icon {
     transform: rotate(90deg);
+    color: #649AA9;
 }
 .folder-name {
     flex: 1;
+    color: inherit;
 }
 .folder-content {
     padding: 0;
@@ -232,14 +245,16 @@ body {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 72px);
+    height: calc(100vh - 72px);
     align-self: stretch;
+    overflow: hidden;
 }
 .main-header {
     padding: 24px 32px;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    border-bottom: 1px solid #E9EAEB;
 }
 .main-header h1 {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -260,12 +275,14 @@ body {
 .content-container {
     background: #f0f0f0;
     flex: 1;
-    min-height: calc(100vh - 72px - 120px);
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     padding: 32px 32px 32px 32px;
     box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .preview-content {
     border: none;

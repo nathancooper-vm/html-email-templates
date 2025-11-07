@@ -67,7 +67,45 @@ function populatePlatformTemplates(platform) {
     
     // Recursively build template list
     function buildTemplateList(items, parentList, parentPath = []) {
-        Object.keys(items).sort().forEach(key => {
+        // Custom sorting: for Yesware platform
+        const keys = Object.keys(items);
+        if (platform === 'yesware' && parentPath.length === 0) {
+            // Root level sorting
+            keys.sort((a, b) => {
+                if (a === 'kickoff') return -1;
+                if (b === 'kickoff') return 1;
+                if (a === 'intro-to-pm') return -1;
+                if (b === 'intro-to-pm') return 1;
+                if (a === 'pm-initial-email') return -1;
+                if (b === 'pm-initial-email') return 1;
+                if (a === 'post-shoot') return -1;
+                if (b === 'post-shoot') return 1;
+                if (a === 'training-intro') return -1;
+                if (b === 'training-intro') return 1;
+                if (a === 'channel-distribution') return -1;
+                if (b === 'channel-distribution') return 1;
+                if (a === 'eob-close-out') return -1;
+                if (b === 'eob-close-out') return 1;
+                if (a === 'pa-training-followup') return -1;
+                if (b === 'pa-training-followup') return 1;
+                return a.localeCompare(b);
+            });
+        } else if (platform === 'yesware' && parentPath.length === 1 && parentPath[0] === 'channel-distribution') {
+            // Channel Distribution folder sorting: initial, follow-up, action-plan
+            keys.sort((a, b) => {
+                if (a === 'initial') return -1;
+                if (b === 'initial') return 1;
+                if (a === 'follow-up') return -1;
+                if (b === 'follow-up') return 1;
+                if (a === 'action-plan') return -1;
+                if (b === 'action-plan') return 1;
+                return a.localeCompare(b);
+            });
+        } else {
+            keys.sort();
+        }
+        
+        keys.forEach(key => {
             const item = items[key];
             
             // Check if it's a folder (object) or template (string)
@@ -160,10 +198,32 @@ function clearTemplateSelection() {
 
 function formatTemplateName(filename) {
     // Convert filename to a more readable format
-    return filename
+    const name = filename
         .replace('.html', '')
         .replace(/-/g, ' ')
         .replace(/\b\w/g, l => l.toUpperCase());
+    
+    // Special cases for specific template names
+    if (name === 'Intro To Pm') {
+        return 'Intro to PM';
+    }
+    if (name === 'Pm Initial Email') {
+        return 'PM initial email';
+    }
+    if (name === 'Follow Up') {
+        return 'Follow Up';
+    }
+    if (name === 'Action Plan') {
+        return 'Action Plan';
+    }
+    if (name === 'Eob Close Out') {
+        return 'EOB Close Out';
+    }
+    if (name === 'Pa Training Followup') {
+        return 'PA Training Follow-up';
+    }
+    
+    return name;
 }
 
 function showPlaceholderMessage() {

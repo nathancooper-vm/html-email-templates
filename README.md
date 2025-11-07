@@ -1,6 +1,6 @@
 # Email Template Preview System
 
-A comprehensive email template preview system for Auth0 and SendGrid platforms, featuring optimized templates with platform-specific email client compatibility.
+A comprehensive email template preview system for Auth0, SendGrid, Salesforce, and Yesware platforms, featuring optimized templates with platform-specific email client compatibility. The preview interface has been refactored to match our new platform UX design with a modern sidebar navigation and improved layout.
 
 ## Live Preview
 
@@ -28,6 +28,23 @@ A comprehensive email template preview system for Auth0 and SendGrid platforms, 
 - **marketing-2.html** - Marketing email template variant
 - **marketing-3.html** - Marketing email template variant
 
+### Yesware Templates
+- **kickoff/** - Kickoff email templates
+  - **intro-initial-a.html** - Initial kickoff email
+  - **intro-initial-b.html** - Alternative kickoff email
+- **intro-to-pm.html** - Introduction to Project Manager email
+- **pm-initial-email.html** - PM initial email
+- **post-shoot/** - Post-shoot email templates
+  - **planning-call.html** - Planning call follow-up
+  - **scheduling-training.html** - Training scheduling email
+- **training-intro.html** - Training introduction email
+- **channel-distribution/** - Channel distribution email templates
+  - **initial.html** - Initial channel distribution email
+  - **follow-up.html** - Follow-up email
+  - **action-plan.html** - Action plan email
+- **eob-close-out.html** - End of onboarding close-out email
+- **pa-training-followup.html** - Property Admin training follow-up email
+
 ## Email Client Compatibility
 
 ### Auth0 Templates
@@ -52,12 +69,14 @@ The preview system provides a convenient way to view and test email templates ac
 
 ### Features
 
-- **Two-Level Navigation**: Accordion-style platform selection (Auth0/SendGrid) with template lists
+- **Modern Navigation**: Sidebar navigation with platform selection dropdown and organized template lists
+- **Accordion Folders**: Collapsible folder groups for organized template navigation
 - **Live Preview**: Real-time template rendering with sample data
 - **Static Hosting**: GitHub Pages compatible - no server required
-- **Cross-Platform Testing**: Compare Auth0 vs SendGrid template rendering
-- **Mobile Responsive**: Desktop-optimized interface for template preview
+- **Cross-Platform Testing**: Compare templates across Auth0, SendGrid, Salesforce, and Yesware platforms
+- **Fixed Layout**: Header and navigation remain fixed while email content scrolls
 - **Dynamic Resizing**: Preview containers automatically adjust to content size
+- **UX Design**: Refactored layout to match our new platform UX design standards
 
 ### Template Variables
 
@@ -120,13 +139,30 @@ For server-side template processing:
 │   │   ├── verification-email-code.html
 │   │   ├── verification-email-link.html
 │   │   └── welcome.html
-│   └── sendgrid/                 # SendGrid templates (clean)
-│       ├── system-1.html
-│       ├── system-detailed.html
-│       ├── system-validation.html
-│       ├── marketing-1.html
-│       ├── marketing-2.html
-│       └── marketing-3.html
+│   ├── sendgrid/                 # SendGrid templates (clean)
+│   │   ├── system-1.html
+│   │   ├── system-detailed.html
+│   │   ├── system-validation.html
+│   │   ├── marketing-1.html
+│   │   ├── marketing-2.html
+│   │   └── marketing-3.html
+│   ├── salesforce/               # Salesforce templates
+│   └── yesware/                  # Yesware templates
+│       ├── kickoff/
+│       │   ├── intro-initial-a.html
+│       │   └── intro-initial-b.html
+│       ├── post-shoot/
+│       │   ├── planning-call.html
+│       │   └── scheduling-training.html
+│       ├── channel-distribution/
+│       │   ├── initial.html
+│       │   ├── follow-up.html
+│       │   └── action-plan.html
+│       ├── intro-to-pm.html
+│       ├── pm-initial-email.html
+│       ├── training-intro.html
+│       ├── eob-close-out.html
+│       └── pa-training-followup.html
 ├── index.html                    # Main preview interface
 ├── styles.css                    # Preview system styles
 ├── script.js                     # Client-side template processing
@@ -141,6 +177,11 @@ For server-side template processing:
 
 1. **View Live Preview**: Visit https://nathancooper-vm.github.io/html-email-templates/
 2. **Local Development**: Run `python3 -m http.server 8080` and visit `http://localhost:8080`
-3. **Template Selection**: Use the accordion navigation to browse Auth0 and SendGrid templates
+3. **Template Selection**: Use the platform dropdown and sidebar navigation to browse templates across all platforms
 4. **Preview Testing**: Compare how templates render across different platforms
 5. **Deployment**: Copy template HTML for use in your email platform
+
+## Recent Updates
+
+- **Yesware Templates Added**: Complete set of Yesware email templates including kickoff, training, channel distribution, and onboarding emails
+- **Layout Refactor**: Preview interface redesigned to match our new platform UX design with improved sidebar navigation, fixed header, and better organization
